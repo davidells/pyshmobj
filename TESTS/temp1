@@ -1,0 +1,40 @@
+#!/usr/bin/env python
+
+import os, shmobj
+
+x = shmobj.SHMINT(44)
+y = shmobj.SHMINT(55)
+z = shmobj.SHMINT(66)
+l1 = shmobj.SHMLST([x,y,z])
+print l1
+print "Free mem", shmobj.freecount()
+a = l1[2]
+print type(a), a
+print "Free mem", shmobj.freecount()
+a = l1[1]
+print type(a), a
+print "Free mem", shmobj.freecount()
+#a = l1[2]
+#print type(a), a
+#print "Free mem", shmobj.freecount()
+print '========================='
+
+s1 = shmobj.SHMSTR('abc')
+s2 = shmobj.SHMSTR('def')
+s3 = shmobj.SHMSTR('ghi')
+print s1,s2,s3
+l2 = shmobj.SHMLST([s1,s2,s3])
+print l2
+print shmobj.freecount()
+a = l2[2]
+print shmobj.freecount()
+print type(a), a
+print '========================='
+
+l3 = shmobj.SHMLST([l1])
+print l3
+print '========================='
+
+print s1
+print [s1]
+print [str(s1)]

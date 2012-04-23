@@ -1,0 +1,31 @@
+#!/usr/bin/env python
+
+import os, shmobj, sys
+from shmobj import freecount, SHMINT, SHMSTR, SHMDCT
+
+pidlist_sem = shmobj.semaphore()
+
+def printCurrentMemUse():
+    print ''
+    print '========================='
+    print "Current free mem :", freecount()
+    print '========================='
+
+#Split processes
+order_added = SHMINT(0)
+sh_pid_dict = SHMDCT({})
+for i in range(0,10):
+    rc = os.fork()
+    if rc == 0: 
+        pidlist_sem.wait()
+        strpid = str(os.getpid())
+        ord_add = SHMINT(order_added.val())
+        sh_pid_dict[SHMSTR(strpid)] = ord_add
+        order_added.set(order_added + 1)
+        pidlist_sem.post()
+        sys.exit(0)
+
+for i in range(0,10):
+    os.wait()
+
+print os.getpid(), ":", sh_pid_dict

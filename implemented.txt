@@ -1,0 +1,88 @@
+SHMLST:
+    list methods implemented:
+        __add__
+        __cmp__
+        __contains__
+        __getitem__
+        __getslice__
+        __hash__
+        __iadd__
+        __init__ 
+        __iter__
+        __len__
+        __repr__
+        __reversed__
+        __setitem__
+        __str__
+        append
+        count 
+        extend
+        index
+        insert
+        pop
+        sort 
+        delitem (new)
+        delete (new)
+        remove
+        reverse
+        val (new)
+    
+    list methods to be implemented:
+        (none)
+    
+    list methods intentionally left out:
+        __delitem__
+        __delslice__
+        __eq__
+        __ge__
+        __getattribute__
+        __gt__
+        __imul__
+        __mul__
+        __ne__
+        __le__
+        __lt__
+        __rmul__
+        __setslice__
+
+
+SHMDCT:
+    dict methods implemented:
+        __contains__
+        __cmp__
+        __getitem__
+        __hash__
+        __iter__
+        __len__
+        __repr__
+        __setitem__
+        __str__
+        clear
+        copy
+        delete (new)
+        get
+        has_key
+        items
+        iteritems
+        iterkeys
+        itervalues
+        keys
+        pop
+        popitem
+        setdefault
+        values
+        val (new)
+    
+    dict methods to be implemented:
+        (none)
+
+    dict methods intentionally left out:
+        __delitem__
+        __eq__
+        __ge__
+        __gt__
+        __ne__
+        __le__
+        __lt__
+        fromkeys
+        update

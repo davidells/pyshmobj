@@ -1,0 +1,4 @@
+Implement condition vars
+Continue implementing builtin methods for shmobj types
+Write full featured systematic tests
+Create more sophisticated "real-world" tests (like classic parallel programs)

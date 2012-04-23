@@ -1,0 +1,20 @@
+#!/usr/bin/env python
+import os, sys, shmobj
+
+pidlist_sem = shmobj.semaphore()
+
+#Split processes
+sh_pid_list = shmobj.SHMLST([])
+for i in range(0,10):
+    rc = os.fork()
+    if rc == 0: 
+        pidlist_sem.wait()
+        sh_pid = shmobj.SHMINT(os.getpid())
+        sh_pid_list.append(sh_pid)
+        pidlist_sem.post()
+        sys.exit(0)
+
+for i in range(0,10):
+    os.wait()
+
+print os.getpid(), ":", sh_pid_list

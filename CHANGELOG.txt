@@ -1,0 +1,182 @@
+0.9.9
+-------------------------------
+DE - Add c_code folder in TESTS with grid and adquad demos.
+DE - Add unittest_shmint.py, unittest_shmdbl.py, unittest_shmstr.py to TESTS
+DE - Fix __rsub__ function for SHMNUM types. 
+DE - Add __rmul__ function to SHMNUM types.
+DE - Update __getslice__ logic in SHMLST
+
+
+0.9.8
+-------------------------------
+DE - Include null byte when setting SHMSTR values
+DE - Added to tests in unittest_shmdict.py
+DE - Added all builtins to SHMSTR class
+DE - Removed unused portions of dict.c
+
+
+0.9.7
+-------------------------------
+DE - Added SHMDCT to implemented.txt
+DE - Added SHMDCT_ITER class to shmobj.py
+DE - Added the following methods to SHMDCT: __cmp__,
+     __contains__, __hash__, __iter__, clear, copy, get, 
+     has_key, items, iteritems, iterkeys, 
+     itervalues, popitem, setdefault
+
+
+0.9.6
+-------------------------------
+DE - Changed many Exceptions that were due to invalid 
+     argument types to TypeErrors
+DE - Added the following methods to SHMLST: __iter__,
+     __reversed__, count, extend, remove, reverse
+DE - Added new classes SHMLST_ITER and SHMLST_RITER
+     which are an iterator and reverse iterator, respectively,
+     for the SHMLST class
+DE - Added list_last, list_prev to list.c, list.h
+     and py2shmlist_last, py2shmlist_prev to py2shmobj.c
+DE - Added new test cases and more assertions to existing
+     test cases in TESTS/unittest_shmlist.py
+
+0.9.5
+-------------------------------
+DE - Added two new unittest based tests in the TESTS folder,
+     unittest_shmdict.py and unittest_shmlist.py
+DE - Added the following methods to SHMLST: __cmp__, insert
+     and made a sort that follows normal convention
+DE - Rearranged some methods in the class hierarchy, providing
+     a default __hash__,  __repr__, and __str__, and also
+     the logic for __init__ with internal=True 
+DE - Fixed nasty seg faulting bug that resulted from returning
+     Py_True and Py_False without incrementing the reference count
+     Now using the macros Py_RETURN_TRUE and Py_RETURN_FALSE
+     Implemented this logic for Py_None as well, using Py_RETURN_NONE;
+DE - Added implemented.txt, documenting functions implemented by
+     the pyshmobj types
+
+0.9.4
+-------------------------------
+DE - Added locking to xxshmalloc.c to provide mutual exclusion
+     when accessing shared memory
+DE - Added py2shmdict_lookup method to py2shmobj.c, allowing
+     for "quick" look up in dictionary object
+DE - Changed much of SHMDCT code in shmobj.py to use the quick
+     lookup
+DE - Added shmdnode_put to py2shmobj.c
+DE - Added functionality to change dictionary vals,
+     i.e. dict['<existing key>'] = <new val>
+
+0.9.3
+--------------------------------
+DE - Added function xx_is_free_ptr(void *ptr) to xxshmalloc, which
+     returns 1 if the ptr in question is within freed memory
+DE - Changed shmint_get, shmdbl_get, shmstr_get, shmlnode_get, 
+     shmptr_get, shmdnode_get, shmdnode_getkey in py2shmobj.c 
+     to return Py_None object when the underlying data has already
+     been freed
+DE - Replaced all error exits (exit(-1) calls) with raising an
+     Exception instead, in both shmobj and py2shmobj.c
+DE - Added DOCS folder and first documentation (deletion.py)
+DE - Added call in TESTS/nqshmobj.py to allocate additional shared memory
+     and also made a small bug fix (locking down read access when reading 
+     the length of the work pool)
+
+0.9.1
+--------------------------------
+DE - Added function xx_add_pages and xx_add_to_free to xxshmalloc.c, allowing newly
+     allocated memory to be added to the free list for xx_shmalloc
+DE - Note the above change moves the mmap call of shared mem into xxshmalloc.c
+DE - Added the function py2shmobj_add_shmem_pages to py2shmobj.c, to test
+     the functionality mentioned above
+DE - Added test shmem_new_test.py to the TESTS directory to show
+     this functionality
+DE - Altered allocation routines in py2shmobj.c to return python None
+     value when allocation fails
+DE - Altered init routines for types in shmobj.py to throw an Exception
+     when an allocation routine from py2shmobj.c fails
+DE - Added sort method to SHMLST
+DE - Added barrier class to shmobj.py
+DE - Added logic in __cmp__ routines of SHMINT and SHMDBL for handling
+     comparison against other shmobj types
+
+
+0.8.8
+--------------------------------
+DE - Finished implementation of POSIX named semaphores
+DE - Changed all TESTS that used old locking code to use new semaphore code
+DE - Removed all SysV locking code from shmobj.py and py2shmobj.c
+DE - Removed test locking.py
+DE - Added test bucketsort.py
+
+0.8.6
+--------------------------------
+DE - Added initial implementation of wrappers for POSIX named semaphores.
+
+0.8.4
+--------------------------------
+DE - Added shmdict_count to py2shmobj.c
+DE - Added keys method to SHMDCT class
+DE - Added values method to SHMDCT class
+DE - Added __len__ method to SHMDCT class
+DE - Added protect method to SHMOBJ class
+DE - Added __eq__ method to SHMOBJ class
+DE - Added protect call to all shmobj object methods
+DE - Added TESTS/dicttest2
+DE - Added __setitem__ method to SHMDCT class
+
+0.8.0
+--------------------------------
+DE - Added first set of dictionary (and dictionary node) wrapper functions
+   - to py2shmobj.c including: 
+   -     shmdict_init, shmdict_insert, shmdict_first,
+   -     shmdict_next, shmdict_remove, shmdnode_alloc, 
+   -     shmdnode_init, shmdnode_get, shmdnode_getkey
+DE - Added SHMDCT class to shmobj.py, implementing with only SHMSTR keys
+DE - Added the following methods to SHMDCT: 
+   -     __init__, __getitem__, __str__, delete
+DE - Added TESTS/dicttest1
+
+
+0.7.0
+--------------------------------
+DE - Added builtin method __contains__ to SHMLST class
+DE - Added builtin method __getslice__ to SHMLST class
+DE - Added pop method to SHMLST class
+DE - Added index method to SHMLST class
+DE - Added function shmobj_equals to py2shmobj.c
+DE - Added negative indexing to SHMLST (i.e. list[-1], etc)
+DE - Added test listtest1 to TESTS folder
+
+
+0.6.8
+--------------------------------
+DE - Fixed error in shmlist_first that returned NULL instead of Python None
+DE - Added debug function for counting available free memory
+DE - Added shmlist_count to py2shmobj.c
+DE - Added following builtin methods to SHMLST class: __len__
+DE - Added delete function to each of the types in shmobj.py
+DE - Added delitem function to SHMLST
+DE - Added test memtest1 to TESTS folder
+DE - Extended inheritance heirarchy with SHMOBJ class
+
+0.6.5
+---------------------------------
+DE - refactored code in list.c and list.h
+DE - updated calls in py2shmobj.c for new list.h
+DE - added the following methods to the SHMLST class: __delitem__
+DE - added shmobj_del function in py2shmobj.c for deleting all types
+DE - added shmlist_getnode function (for getting node by index) to py2shmobj.c
+       and changed SHMLST functions to use this new function
+DE - added shmlist_remove, shmlnode_del to py2shmobj.c
+DE - added typed_ptr utility method to shmobj.py
+
+
+0.6.0
+----------------------------------
+DE - Implemented SHMDBL
+DE - Added new test dbltest1.py to TESTS directory
+DE - Added most numeric built in functions (__mul__, __truediv__, etc.) to SHMINT and SHMDBL
+DE - Compacted simple numeric wrappers (SHMINT, SHMDBL) in shmobj.py using new class SHMNUM
+DE - Defined new types in py2shmobj.c
+DE - Added some comments to several files

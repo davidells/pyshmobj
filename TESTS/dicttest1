@@ -1,0 +1,97 @@
+#!/usr/bin/env python
+
+import os, shmobj
+from shmobj import freecount
+
+def printCurrentMemUse():
+    print ''
+    print '========================='
+    print "Current free mem :", freecount()
+    print '========================='
+
+printCurrentMemUse()
+
+k1 = shmobj.SHMSTR('a')
+e1 = shmobj.SHMINT(1)
+
+k2 = shmobj.SHMSTR('b')
+e2 = shmobj.SHMINT(2)
+
+k3 = shmobj.SHMSTR('c')
+e3 = shmobj.SHMINT(3)
+
+k4 = shmobj.SHMSTR('d')
+e4 = shmobj.SHMINT(4)
+
+k5 = shmobj.SHMSTR('e')
+e5 = shmobj.SHMINT(5)
+
+k6 = shmobj.SHMSTR('f')
+e6 = shmobj.SHMINT(6)
+
+
+kd2 = shmobj.SHMSTR('d2')
+d2 = shmobj.SHMDCT({k4:e4, k5:e5, k6:e6})
+
+d1 = shmobj.SHMDCT({k1:e1, k2:e2, k3:e3, kd2:d2})
+
+
+print "d1 = ", d1
+print "d2 = ", d2
+print
+printCurrentMemUse()
+print
+print 'd1[k3] = ', d1[k3]
+print "d1['b'] = ", d1['b']
+print "d1['d2'] = ", d1['d2']
+d1['b'] = shmobj.SHMINT(17)
+e2.delete()
+print "d1['b'] = shmobj.SHMINT(17), d1['b'] = %s" % d1['b']
+try:
+    print "d1['nothing'] = ", d1['nothing']
+except KeyError:
+    print "Key not in dict"
+print
+print "len(d1) = ", len(d1)
+print "len(d2) = ", len(d2)
+print
+print "d1.keys() = ", d1.keys()
+print "d1.values() = ", d1.values()
+print
+print "d2.keys() = ", d2.keys()
+print "d2.values() = ", d2.values()
+
+printCurrentMemUse()
+print "Removing d2 from d1..."
+d1.pop('d2', deletekey=False)
+kd2.delete()
+print
+
+printCurrentMemUse()
+print "Deleting d1 (shallow=False)..."
+d1.delete(shallow=False)
+print
+
+printCurrentMemUse()
+
+print "d2 = ", d2
+print "Remove 'e' from d2..."
+elem = d2.pop('e')
+elem.delete()
+try:
+    print "d2.pop('notthere') = ", d2.pop('notthere')
+except KeyError:
+    print "Key not in dict"
+print "d2.pop('notthere', e5) == e5 : ", (d2.pop('notthere', e5) == e5)
+print
+
+d3 = d2
+print "d3 = d2, d3:", d3
+print "d3 == d2 : ", (d3 == d2)
+
+printCurrentMemUse()
+print "Deleting d2 (shallow=False)..."
+d2.delete(shallow=False)
+printCurrentMemUse()
+
+

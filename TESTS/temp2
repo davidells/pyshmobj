@@ -1,0 +1,19 @@
+#!/usr/bin/env python
+
+import os, shmobj
+
+x = shmobj.SHMINT(44)
+y = shmobj.SHMINT(55)
+l = shmobj.SHMLST([x])
+sem = shmobj.semaphore()
+
+sem.wait()
+rc = os.fork()
+if rc == 0:  # child
+    sem.wait()
+    print os.getpid(), l
+else:
+    l.append(y)
+    print os.getpid(), l
+    sem.post()
+    (pid,stat) = os.waitpid(rc,0)

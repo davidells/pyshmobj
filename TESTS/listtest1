@@ -1,0 +1,96 @@
+#!/usr/bin/env python
+
+import os, shmobj
+import sys
+from shmobj import freecount
+
+def printCurrentMemUse():
+    print ''
+    print '========================='
+    print "Current free mem :", freecount()
+    print '========================='
+
+printCurrentMemUse()
+
+x = shmobj.SHMINT(44)
+y = shmobj.SHMINT(55)
+z = shmobj.SHMINT(66)
+
+list1 = shmobj.SHMLST([z,y,x])
+print 'list1: ', list1
+print 'x in list1:', (x in list1)
+print 'z in list1:', (z in list1)
+print 'value 44 in list1:', (44 in list1)
+print 'value 55 in list1:', (55 in list1)
+
+printCurrentMemUse()
+
+list1.delitem(0, shallow=True)
+print 'list1: ', list1
+print 'x in list1:', (x in list1)
+print 'z in list1:', (z in list1)
+print 'value 44 in list1:', (44 in list1)
+print 'value 55 in list1:', (55 in list1)
+
+#Splicing and indexing
+list1.append(shmobj.SHMINT(99))
+printCurrentMemUse()
+print 'list1:', list1
+print 'list1[0:1]:', list1[0:1]
+print 'list1[-3:-2]:', list1[-3:-2]
+print 'list1[-1:0]:', list1[-1:0]
+print 'list1[:2]:', list1[:2]
+print 'list1[2:]:', list1[2:]
+print 'list1[-2]:', list1[-2]
+try: print 'list1[0:5]:', list1[0:5]
+except IndexError: print 'Index error'
+try: print 'list1[-5:-2]:', list1[-5:-2]
+except IndexError: print 'Index error'
+try: print 'list1[-4]:', list1[-4]
+except IndexError: print 'Index error'
+
+#Sorting A
+printCurrentMemUse()
+list1.sort()
+print 'list1 after sort: ', list1
+printCurrentMemUse()
+
+#Inner lists
+print ''
+list2 = shmobj.SHMLST([shmobj.SHMINT(101), 
+                       shmobj.SHMINT(102), 
+                       shmobj.SHMINT(103)])
+
+print 'Created list2'
+printCurrentMemUse()
+list1.append(list2)
+print 'list1:',list1
+a = list2.pop()
+print 'popped off last item from list2:', a
+print 'list1:',list1
+list3 = list1.pop()
+print 'popped off last item from list1:', list3
+
+list1.append(list3)
+list2.append(a)
+
+#Sorting B
+print 'Added back in popped items, list1:', list1
+list1.sort()
+print 'list1 after sort:', list1
+
+
+printCurrentMemUse()
+
+#Clean up (the long way to show various delete calls)
+print 'Cleaning up...'
+list1.delitem(2)
+list1.delete(shallow=True)
+list2.delete(shallow=False)
+#No need to call list3.delete because list2 = list3
+x.delete()
+y.delete()
+z.delete()
+a.delete()
+
+printCurrentMemUse()

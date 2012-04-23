@@ -1,0 +1,59 @@
+#!/usr/bin/env python
+
+import os, shmobj
+from shmobj import freecount
+
+print '========================='
+print "Initial free mem :", freecount()
+print '========================='
+
+x = shmobj.SHMINT(44)
+y = shmobj.SHMINT(55)
+z = shmobj.SHMINT(66)
+print "Free mem after creating x,y,z:", freecount()
+
+print '========================='
+
+print "Free mem before creating l1:", freecount()
+l1 = shmobj.SHMLST([x,y,z])
+print "Free mem after creating l1:", freecount()
+
+l1.delitem(0, shallow=True)
+print "Shallow deleted first item of l1 ...Free mem", freecount()
+x.delete()
+print "True deleted first item of l1 ...Free mem", freecount()
+l1.delete(shallow=True)
+print "Shallow deleted list l1 ...Free mem", freecount()
+
+print '========================='
+
+print "Free mem before creating l2 :", freecount()
+l2 = shmobj.SHMLST([shmobj.SHMINT(2), shmobj.SHMINT(3), shmobj.SHMINT(4)])
+print "Free mem after creating l2 :", freecount()
+l2.delitem(1)
+
+print '========================='
+
+print "Shared memory free list:"
+shmobj.print_freelist()
+
+print '========================='
+
+print "Free mem after deleting l2[1] :", freecount()
+l2.delete()
+print "Free mem after deleting l2 :", freecount()
+
+print '========================='
+
+print "Shared memory free list:"
+shmobj.print_freelist()
+
+print '========================='
+
+y.delete()
+z.delete()
+print 'Free mem after deleting all remaining :', freecount()
+
+print '========================='
+
+

@@ -1,0 +1,13 @@
+#!/usr/bin/env python
+
+import os, shmobj
+
+x = shmobj.SHMINT(44)
+y = shmobj.SHMINT(55)
+z = shmobj.SHMINT(66)
+l1 = shmobj.SHMLST([x,y,z])
+print l1
+
+l3 = shmobj.SHMLST([l1])
+print l3
+print l3[0]
